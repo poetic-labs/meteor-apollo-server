@@ -1,4 +1,4 @@
-## Meteor Apollo Instagram Search
+## Meteor Apollo Server
 
 ```js
 npm install
@@ -6,7 +6,5 @@ npm install
 meteor
 ```
 
-Search keywords from Instagrams recent api
-
-## Contribute
-It'd be cool to explore other parts of the Instagram API. Help out!
+Simple server to be consumed by an apollo client. Has instagram connector
+example.
