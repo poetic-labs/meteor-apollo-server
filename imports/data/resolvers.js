@@ -9,7 +9,7 @@ const resolvers = {
     createStubTodo(source, args) {
       let todo = Object.assign({}, args);
 
-      todo.id = Math.random() * 9999999;
+      todo.id = Math.ceil(Math.random() * 9999999);
 
       TODOs.push(todo);
 
