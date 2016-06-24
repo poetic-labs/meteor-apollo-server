@@ -7,7 +7,7 @@ import resolvers from '/imports/data/resolvers';
 
 const GRAPHQL_PORT = 4000;
 
-const graphQLServer = express().use('*', cors());
+const graphQLServer = express().use('*', cors({ origin: 'http://localhost:3000' }));
 
 graphQLServer.use('/graphql', apolloServer(async () => {
     return {
