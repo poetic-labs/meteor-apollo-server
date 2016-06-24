@@ -14,15 +14,15 @@ const TodoType = new GraphQLObjectType({
   name: 'todo',
   fields: () => ({
     id: {
-      type: GraphQLInt,
+      type: new GraphQLNonNull(GraphQLInt),
       description: 'Todo id'
     },
     title: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: 'Todo title'
     },
     completed: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
       description: 'Flag to mark if the todo is completed'
     }
   })
@@ -35,39 +35,39 @@ const TodosSchema = new GraphQLObjectType({
     todos: {
       type: new GraphQLList(TodoType),
       description: "Array of todos",
-      args: {
-        message: {type: GraphQLString}
-      },
       // todosExampleResolveFunction should be replaced by the firebase or
       // google sheets resolve function declared in resolvers.js
-      resolve: resolvers.TodosSchema.todosExampleResolveFunction
+      resolve: resolvers.TodosSchema.getStubTodos
     }
   })
 });
 
 const MutationType = new GraphQLObjectType({
-  name: "BlogMutations",
-  description: "Mutations of our blog",
+  name: "TodoMutations",
+  description: "Mutations of our todo list",
   fields: () => ({
     createTodo: {
       type: TodoType,
       args: {
         title: {type: new GraphQLNonNull(GraphQLString)},
-        completed: {type: new GraphQLNonNull(GraphQLString)}
+        completed: {type: new GraphQLNonNull(GraphQLBoolean)}
       },
-      resolve: function(source, args) {
-        let todo = Object.assign({}, args);
-
-        // Generate the _id
-        todo._id = `${Date.now()}::${Math.ceil(Math.random() * 9999999)}`;
-
-        // Add the Todo to the data store
-        Todos.pudh(todo);
-
-        // return the new post.
-        return todo;
-      }
-    }
+      resolve: resolvers.TodosSchema.createStubTodo
+    },
+    deleteTodo: {
+      type: TodoType,
+      args: {
+        id: {type: new GraphQLNonNull(GraphQLInt)}
+      },
+      resolve: resolvers.TodosSchema.deleteStubTodo
+    },
+    toggleTodoCompleted: {
+      type: TodoType,
+      args: {
+        id: {type: new GraphQLNonNull(GraphQLInt)}
+      },
+      resolve: resolvers.TodosSchema.toggleStubTodoCompleted
+    },
   })
 });
 

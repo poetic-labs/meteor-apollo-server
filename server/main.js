@@ -1,4 +1,5 @@
 import { apolloServer } from 'graphql-tools';
+import cors from 'cors';
 import express from 'express';
 import proxyMiddleware from 'http-proxy-middleware';
 import schema from '/imports/data/schema';
@@ -6,7 +7,7 @@ import resolvers from '/imports/data/resolvers';
 
 const GRAPHQL_PORT = 4000;
 
-const graphQLServer = express();
+const graphQLServer = express().use('*', cors());
 
 graphQLServer.use('/graphql', apolloServer(async () => {
     return {
