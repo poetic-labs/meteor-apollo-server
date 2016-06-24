@@ -4,24 +4,24 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } from 'graphql';
 import resolvers from './resolvers.js';
-
 
 const TodoType = new GraphQLObjectType({
   name: 'todo',
   fields: () => ({
     id: {
-      type: GraphQLInt,
+      type: new GraphQLNonNull(GraphQLInt),
       description: 'Todo id'
     },
     title: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: 'Todo title'
     },
     completed: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
       description: 'Flag to mark if the todo is completed'
     }
   })
@@ -34,9 +34,6 @@ const TodosSchema = new GraphQLObjectType({
     todos: {
       type: new GraphQLList(TodoType),
       description: "Array of todos",
-      args: {
-        message: {type: GraphQLString}
-      },
       // todosExampleResolveFunction should be replaced by the firebase or
       // google sheets resolve function declared in resolvers.js
       resolve: resolvers.TodosSchema.todosExampleResolveFunction
