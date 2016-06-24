@@ -4,10 +4,11 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } from 'graphql';
 import resolvers from './resolvers.js';
-
+import TODOs from './stub-data.js';
 
 const TodoType = new GraphQLObjectType({
   name: 'todo',
@@ -44,7 +45,33 @@ const TodosSchema = new GraphQLObjectType({
   })
 });
 
+const MutationType = new GraphQLObjectType({
+  name: "BlogMutations",
+  description: "Mutations of our blog",
+  fields: () => ({
+    createTodo: {
+      type: TodoType,
+      args: {
+        title: {type: new GraphQLNonNull(GraphQLString)},
+        completed: {type: new GraphQLNonNull(GraphQLString)}
+      },
+      resolve: function(source, args) {
+        let todo = Object.assign({}, args);
+
+        // Generate the _id
+        todo._id = `${Date.now()}::${Math.ceil(Math.random() * 9999999)}`;
+
+        // Add the Todo to the data store
+        Todos.pudh(todo);
+
+        // return the new post.
+        return todo;
+      }
+    }
+  })
+});
+
 export default schema = new GraphQLSchema({
   query: TodosSchema,
-})
-  // mutation: MutationType
+  mutation: MutationType
+});
