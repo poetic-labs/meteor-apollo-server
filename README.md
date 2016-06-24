@@ -28,3 +28,18 @@ sent to the client. (schema) Then we connect to data sources and expose a method
 (connectors). Using that connection we then resolve and handle the incoming
 queries (resolve)
 
+## Client Queries:
+
+Get all Todos (limit fields as needed)
+
+```
+  {
+    todos {
+      id,
+      title,
+      completed
+    }
+  }
+```
+
+
